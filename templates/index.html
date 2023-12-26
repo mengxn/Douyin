@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>易搜索</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 200px 0 0 0; /* Create a top margin of 200px */
+            padding: 0;
+            display: flex;
+            align-items: flex-start; /* Align content to the top */
+            justify-content: center;
+            min-height: 100vh; /* Ensure the content takes at least the full height of the viewport */
+        }
+
+        #container {
+            width: 80%; /* Set content container width */
+            max-width: 600px; /* Set maximum width to avoid being too wide on large screens */
+            padding: 20px; /* Add padding for better spacing */
+            background-color: #fff; /* Add a white background to the container */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+            border-radius: 8px; /* Add rounded corners to the container */
+        }
+
+        h1 {
+            color: #333;
+            text-align: center; /* Center the title */
+            margin-bottom: 20px; /* Add spacing below the title */
+        }
+
+        form {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 20px; /* Add spacing below the form */
+        }
+
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+            text-align: left;
+            width: 100px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 15px; /* Increase button padding for a larger click area */
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-top: 10px;
+            padding: 15px; /* Increase padding for better spacing */
+            background-color: #f5f5f5; /* Use a lighter background color for each item */
+            border: 1px solid #ddd;
+            border-radius: 8px; /* Add rounded corners to the items */
+            cursor: pointer;
+            overflow: hidden; /* Hide overflowing content */
+            white-space: nowrap; /* Do not wrap text to the next line */
+            text-overflow: ellipsis; /* Display ellipsis for overflow */
+        }
+
+        h2 {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        p {
+            color: #555;
+            margin-top: 5px;
+        }
+
+        .error {
+            color: #ff434f;
+        }
+
+    </style>
+</head>
+<body>
+<div id="container">
+    <h1>易搜索</h1>
+
+    <form action="/search" method="GET">
+        <input type="text" id="search_query" name="query" required>
+        <button type="submit">解析</button>
+    </form>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% if search_result %}
+        <div id="search-results">
+            <h2>搜索结果：</h2>
+            <ul>
+                {% for item in search_result %}
+                    <li onclick="download('{{ item }}')">{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    function download(url) {
+        window.open(url, '_blank'); // Open the URL in a new tab or window
+    }
+</script>
+</body>
+</html>

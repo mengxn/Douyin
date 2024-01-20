@@ -110,16 +110,39 @@
             <h2>搜索结果：</h2>
             <ul>
                 {% for item in search_result %}
-                    <li onclick="download('{{ item }}')">{{ item }}</li>
+                    <li onclick="downVideo('{{ item }}', '1.mp4')">{{ item }}</li>
                 {% endfor %}
             </ul>
         </div>
     {% endif %}
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 <script>
-    function download(url) {
-        window.open(url, '_blank'); // Open the URL in a new tab or window
+    function downVideo(url, name) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.responseType = 'blob';
+        xhr.onprogress = function (e) {
+            if (e.lengthComputable) {
+                const percentage = (e.loaded / e.total) * 100;
+                const progressBar = document.getElementById('progressBar');
+                progressBar.value = percentage;
+            }
+        };
+        xhr.onload = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                let blob = this.response;
+                let u = window.URL.createObjectURL(new Blob([blob]));
+                let a = document.createElement('a');
+                a.download = name;
+                a.href = u;
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            }
+        };
+        xhr.send();
     }
 </script>
 </body>

@@ -145,7 +145,8 @@ class Douyin(object):
             try:
                 if resp.status_code == 200:
                     data = resp.json()
-                    if (data_list := data["aweme_list"]) is None:
+                    data_list = data["aweme_list"]
+                    if data_list is None:
                         print("该账号为私密账号，需要使用登录后的 Cookie，且登录的账号需要关注该私密账号")
                         finished = True
                     else:
